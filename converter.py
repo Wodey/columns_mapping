@@ -1,5 +1,5 @@
 import openai 
-from utilities import get_prompt_for_mapping
+from utilities import get_prompt_for_mapping, get_prompt_for_data_transfer
 from dotenv import load_dotenv
 from os import getenv 
 import json 
@@ -16,3 +16,8 @@ class Converter:
         prompt = get_prompt_for_mapping(table, template, table_name, template_name)
         result = self.prompt(prompt)
         return json.loads(result)
+
+    def get_data_transfer(self, table, template, table_name, template_name, mapping):
+        prompt = get_prompt_for_data_transfer(table, template, table_name, template_name, mapping)
+        result = self.prompt(prompt)
+        return json.loads(result)   
