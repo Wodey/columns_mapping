@@ -12,12 +12,12 @@ class Converter:
         chat_completion = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "user", "content": prompt}], temperature=0.0)
         return chat_completion.choices[0].message.content
 
-    def get_mapping(self, table, template, table_name, template_name):
-        prompt = get_prompt_for_mapping(table, template, table_name, template_name)
+    def get_mapping(self, table, template):
+        prompt = get_prompt_for_mapping(table, template)
         result = self.prompt(prompt)
         return json.loads(result)
 
-    def get_data_transfer(self, table, template, table_name, template_name, mapping):
-        prompt = get_prompt_for_data_transfer(table, template, table_name, template_name, mapping)
+    def get_data_transfer(self, table, template, mapping):
+        prompt = get_prompt_for_data_transfer(table, template, mapping)
         result = self.prompt(prompt)
         return json.loads(result)   

@@ -14,8 +14,8 @@ class TestConverter(unittest.TestCase):
     def test_mapping(self):
         table = pd.read_csv('table_A.csv', nrows=10)
         template = pd.read_csv('template.csv', nrows=10)
-
-        result = self.converter.get_mapping(table, template, "table", "template")
+        
+        result = self.converter.get_mapping(table, template)
         expected_result = {
             "Date": "Date_of_Policy",
             "EmployeeName": "FullName",
@@ -25,15 +25,15 @@ class TestConverter(unittest.TestCase):
             }
 
         self.assertEqual(result, expected_result)
-        
+
     def test_transferer(self):
         table = pd.read_csv('table_A.csv', nrows=10)
         template = pd.read_csv('template.csv', nrows=10)
 
-        mapping = self.converter.get_mapping(table, template, "table", "template")
+        mapping = self.converter.get_mapping(table, template)
         mapping = {value: key for key, value in mapping.items()}
 
-        result = self.converter.get_data_transfer(table, template, "table", "template", mapping)
+        result = self.converter.get_data_transfer(table, template, mapping)
         expected_result = {'Date': '05-01-2023, 05-02-2023, 05-03-2023, 05-04-2023, 05-05-2023, 05-06-2023, 05-07-2023, 05-08-2023, 05-09-2023, 05-10-2023',
                             'EmployeeName': 'John Doe, Jane Smith, Michael Brown, Alice Johnson, Bob Wilson, Carol Martinez, David Anderson, Eva Thomas, Frank Jackson, Grace White',
                             'Plan': 'Gold Plan, Silver Plan, Bronze Plan, Gold Plan, Silver Plan, Bronze Plan, Gold Plan, Silver Plan, Bronze Plan, Gold Plan',
