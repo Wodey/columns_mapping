@@ -1,8 +1,10 @@
 import openai 
-from utilities import get_prompt_for_mapping, get_prompt_for_data_transfer, get_prompt_for_data_transfer_fewshot, parse_text_output
+from utilities import get_prompt_for_mapping, get_prompt_for_conversion_functions
 from dotenv import load_dotenv
 from os import getenv 
 import json 
+import datetime 
+import re 
 
 load_dotenv()  
 openai.api_key = getenv("OPENAI_API_KEY")
@@ -17,11 +19,8 @@ class Converter:
         result = self.prompt(prompt)
         return json.loads(result)
 
-    def get_data_transfer(self, table, template, mapping):
-        prompt = get_prompt_for_data_transfer(table, template, mapping)
+    def get_conversion_functions_code(self, table, template, mapping):
+        prompt = get_prompt_for_conversion_functions(table, template, mapping)
         result = self.prompt(prompt)
-        return json.loads(result)
-    def get_data_transfer_few_shot(self, table, template, fewshot, new_table):
-        prompt = get_prompt_for_data_transfer_fewshot(table, template, fewshot, new_table)
-        result = self.prompt(prompt)
-        return parse_text_output(result) 
+        return result 
+
