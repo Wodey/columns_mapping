@@ -16,9 +16,17 @@ def main(source_file, template_file, target_file):
 
 
     chunksize = 10
+    fewshot = None 
+    is_fewshot = False 
+
     with pd.read_csv(source_file, chunksize=chunksize) as reader:
         for chunk in reader:
-            converted_values = converter.get_data_transfer(chunk, template, mapping)
+            if not is_fewshot:
+                converted_values = converter.get_data_transfer(chunk, template, mapping)
+                fewshot = pd.DataFrame(converted_values)
+                is_fewshot = True 
+            else:
+                converted_values = converter.get_data_transfer_few_shot(table, template, fewshot, chunk)
             converted_values = pd.DataFrame(converted_values)
             output = pd.concat([output, converted_values])
             time.sleep(20) # I use this to avoid open ai request per minute limit, however with paid plan it is not necessary
